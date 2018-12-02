@@ -21,5 +21,5 @@ class Building:
         self.containedSpaces.remove(space)
 
     def __str__(self):
-        print("\ttype: %s\n\tID: %d\n\tname: %s\n\ttopLevel: %s\n"%(self.type, self.id, self.name, self.topLevelSpace))
+        print("\ttype: %s\n\tID: %d\n\tname: %s\n\ttopLevel: %s\n" % (self.type, self.id, self.name, self.topLevelSpace))
         

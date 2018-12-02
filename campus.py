@@ -19,7 +19,7 @@ class Campus:
         self.containedSpaces.remove(space)
     
     def __str__(self):
-        print("type: %s\nID: %d\nname: %s"%(self.type, self.id, self.name))
+        print("type: %s\nID: %d\nname: %s" % (self.type, self.id, self.name))
         
         print("containedSpaces:\n")
         for s in self.containedSpaces:

@@ -4,6 +4,7 @@ import pickle
 from campus import Campus
 from building import Building
 
+# falta coordenadas
 class ISTdb:
     def __init__(self, name):
         self.name = name

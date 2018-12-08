@@ -3,8 +3,8 @@ import json
 import pickle
 from campus import Campus
 from building import Building
+from buildingCoordinates import BuildingCoordinates
 
-# falta coordenadas 
 class ISTdb:
     def __init__(self, name):
         self.name = name
@@ -21,6 +21,8 @@ class ISTdb:
             response = requests.get(url)
             istCampus = response.json()
 
+            buildingsInfo = BuildingCoordinates()
+
             for c in istCampus:
                 newUrl = url + c["id"]
                 response = requests.get(newUrl)
@@ -34,18 +36,28 @@ class ISTdb:
                 campusObj = Campus(cType, cID, cName)
 
                 for space in cContainedSpaces:
-                    sType = space["type"]
-                    sID = int(space["id"])
-                    sName =space["name"]
-                    sTopLevelSpace = space["topLevelSpace"]
-                    buildingObj = Building(sType, sID, sName, sTopLevelSpace)
-                    campusObj.addContainedSpace(buildingObj)
+                    info = buildingsInfo.getInfo(campus["id"], space["id"])
+
+                    if info:
+                        sType = space["type"]
+                        sID = int(space["id"])
+                        sName = space["name"]
+                        sTopLevelSpace = space["topLevelSpace"]
+                        sLat = info["lat"]
+                        sLng = info["lng"]
+                        sRadius = info["radius"]
+                        buildingObj = Building(sType, sID, sName, sTopLevelSpace, sLat, sLng, sRadius)
+                        
+                        campusObj.addContainedSpace(buildingObj)
 
                 self.ist.append(campusObj)
 
             f = open('dump_' + self.name, 'wb')
             pickle.dump(self.ist, f)
             f.close()
+
+    def getDB(self):
+            return self.ist
             
     def __str__(self):
         for i in self.ist:

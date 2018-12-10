@@ -1,0 +1,47 @@
+<!doctype>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>User application</title>
+    </head>
+
+    <body>
+        <script src="js/jquery-3.3.1.min.js"></script>
+
+        <div id="coords"></div>
+
+        <script>
+            var currentPosition = {
+                lat: 0,
+                lng: 0
+            }
+            
+            navigator.geolocation.getCurrentPosition(success, failure)
+
+            function success(position) {
+                currentPosition.lat = position.coords.latitude;
+                currentPosition.lng = position.coords.longitude;
+                
+                $("#coords").html("Latitude: " + currentPosition.lat + "<br>Longitude: "+ currentPosition.lng)
+            }
+            
+            function failure() {
+                $("#coords").html("Permission denied to access GPS location!")
+            }
+
+            $(document).ready(function() {
+                $.ajax({
+                    url: "http://127.0.0.1:5000/api/user",
+                    type: "GET",
+                    success: function(response) {
+                        console.log(response)
+                    },
+                    failure: function(error) {
+                        console.log(failure)
+                    }
+                })
+            });
+        </script>
+    </body>
+    
+</html>

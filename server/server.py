@@ -29,6 +29,13 @@ def admin_login():
     # No content
     return jsonify({'error': 'No login information'}), 400
 
+@app.route('/api/admin/building', methods = ['POST'])
+def admin_add_building():
+    building_info = request.get_json()
+    if building_info:
+        return jsonify({'status': 'successfull'}), 200
+    else:
+        return jsonify({'error': 'No building information'}), 400
 #USER API
 @app.route('/api/user/login')
 def user_login():

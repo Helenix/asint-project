@@ -13,6 +13,9 @@ class Campus:
     def addContainedSpace(self, building):
         self.containedSpaces.append(building)
 
+    def getCampusID(self):
+        return self.id
+
     def __str__(self):
         print("Type: %s" %(self.type))
         print("ID: %d" %(self.id))

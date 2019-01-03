@@ -17,6 +17,8 @@ class Building:
         self.topLat = newTopLat
         self.rightLng = newRightLng
 
+    def getBuildingID(self):
+        return self.id
 
     def __str__(self):
         print("\tType: %s" %(self.type))

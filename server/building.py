@@ -24,9 +24,9 @@ class Building:
         print("\tName: %s" %(self.name))
         print("\tTop Level Space ID: %d" %(self.topLevelSpaceID))
         print("\tCoordinates:")
-        print("\t    -Bottom lattitude: %f" %(self.botLat))
+        print("\t    -Bottom latitude: %f" %(self.botLat))
         print("\t    -Left longitude: %f" %(self.leftLng))
-        print("\t    -Top lattitude: %f" %(self.topLat))
+        print("\t    -Top latitude: %f" %(self.topLat))
         print("\t    -Right longitude: %f" %(self.rightLng))
         print("")
         

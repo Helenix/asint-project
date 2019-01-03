@@ -23,6 +23,9 @@
                 currentPosition.lng = position.coords.longitude;
                 
                 $("#coords").html("Latitude: " + currentPosition.lat + "<br>Longitude: "+ currentPosition.lng)
+
+                $(location).attr('href', 'http://fenix.ist.utl.pt/oauth/userdialog?client_id=851490151333942&redirect_uri=http://127.0.0.1:5000/api/user/login')
+                
             }
             
             function failure() {
@@ -41,7 +44,8 @@
                     }
                 })
             });
+
+            
         </script>
     </body>
-    
 </html>

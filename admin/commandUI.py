@@ -1,4 +1,7 @@
-class RequestUI:
+import requests
+import json
+
+class CommandUI:
     def __init__(self):
         exited = False
         while not exited:
@@ -11,15 +14,23 @@ class RequestUI:
 
             cmd = input("> ")
 
-            if cmd is '1':
+            if cmd == '1':
+                building_type = input("Type (campus, building): ")
+                
+                if building_type.lower() == 'campus':
+                    pass
+                elif building_type.lower() == 'building':
+                    pass
+                else:
+                    print("Wrong building type!\n")
+
+            elif cmd == '2':
                 print("")
-            elif cmd is '2':
+            elif cmd == '3':
                 print("")
-            elif cmd is '3':
+            elif cmd == '4':
                 print("")
-            elif cmd is '4':
-                print("")
-            elif cmd is '5':
+            elif cmd == '5':
                 exited = True
             else:
                 print("Invalid command!\n")

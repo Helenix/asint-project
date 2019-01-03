@@ -1,34 +1,9 @@
-from istdb import ISTdb
-from calculator import Calculator
-from user import User
+from tecnico_buildings import TecnicoBuildings
+import pickle
 
-tecnico = ISTdb("ISTdb")
-db = tecnico.getDB()
+tecnico = TecnicoBuildings("ist")
 
-user = User(1, 38.736983, -9.139386)
+#serialized_data = tecnico.getTecnico()
+#original_data = pickle.loads(serialized_data)
 
-nearestBuilding = {
-    "buildingID": None,
-    "distance": None
-}
-
-for campus in db:
-    for space in campus.containedSpaces:
-        point1 = user.getCoordinates()
-        point2 = space.getCoordinates()
-
-        distance = Calculator.findDistance(point1, point2)
-        if nearestBuilding["distance"] == None or distance < nearestBuilding["distance"]:
-            nearestBuilding["buildingID"] = space.getID()
-            nearestBuilding["distance"] = distance
-
-            # Nao pode estar aqui, so depois de calular todos eq se verifica
-            if nearestBuilding["distance"] < space.getRadius():
-                user.setBuilding(space)
-
-
-print("Nearest Building ID: %d Distance %f\n" % (nearestBuilding["buildingID"], nearestBuilding["distance"]))
-build = user.getBuilding()
-if build:
-    print("User inside building: ")
-    build.__str__()
+#original_data['Alameda'].__str__()

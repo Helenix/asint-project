@@ -5,6 +5,18 @@ from campus import Campus
 from building import Building
 from buildings_info import BuildingsInfo
 
+'''import pymongo
+
+client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
+
+db = client["Test"]
+collections = db["Campus"]
+collections.insert_one({
+    "name": "alameda"
+})'''
+
+
+
 class TecnicoBuildings:
     def __init__(self, name):
         self.name = name
@@ -46,9 +58,7 @@ class TecnicoBuildings:
             f = open('dump_' + self.name, 'wb')
             pickle.dump(self.tecnico, f)
             f.close()
-    
-    def getTecnico(self):
-        return self.tecnico
+           
 
     def showBuildings(self):
         for campus_name, campus_obj in self.tecnico.items():

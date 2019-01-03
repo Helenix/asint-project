@@ -6,35 +6,34 @@ import fenixedu
 app = Flask(__name__)
 CORS(app)
 
-tecnico = TecnicoBuildings("IST")
-buildings = tecnico.getTecnico()
+tecnico = TecnicoBuildings('ist')
 
-@app.route("/")
+@app.route('/')
 def root():
-    return "root"
+    return 'root'
 
 # ADMIN API
-@app.route("/api/admin/login", methods = ["GET"])
+@app.route('/api/admin/login', methods = ['GET'])
 def admin_login(): 
     login_info = request.get_json()
     if login_info:
-        name = login_info["name"]
-        password = login_info["password"]
+        name = login_info['name']
+        password = login_info['password']
 
-        if name == "admin" and password == "admin123":
+        if name == 'admin' and password == 'admin123':
             # OK
-            return jsonify({"token": "admin"}), 200
+            return jsonify({'token': 'admin'}), 200
         else:
             # Bad request
-            return jsonify({"error": "Wrong login informatarion"}), 400
+            return jsonify({'error': 'Wrong login information'}), 400
     # No content
-    return jsonify({"error": "No login information"}), 400
+    return jsonify({'error': 'No login information'}), 400
 
 #USER API
-@app.route("/api/user/login")
+@app.route('/api/user/login')
 def user_login():
     code = request.args['code']
-    return jsonify({"code": code}), 200
+    return jsonify({'code': code}), 200
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug = True)

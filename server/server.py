@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import time
-from istdb import ISTdb
+from tecnico_buildings import TecnicoBuildings
+import fenixedu
 
 app = Flask(__name__)
 CORS(app)
 
-tecnico = ISTdb("ISTdb")
-db = tecnico.getDB()
+tecnico = TecnicoBuildings("IST")
+buildings = tecnico.getTecnico()
 
 @app.route("/")
 def root():
@@ -31,12 +31,10 @@ def admin_login():
     return jsonify({"error": "No login information"}), 400
 
 #USER API
-@app.route("/api/user", methods = ["GET"])
-def user_root():
-    response = jsonify({"message": "Hey user"})
-
-    return jsonify({"message": "Hey user"}), 200
-    
+@app.route("/api/user/login")
+def user_login():
+    code = request.args['code']
+    return jsonify({"code": code}), 200
 
 if __name__ == "__main__":
     app.run(debug = True)

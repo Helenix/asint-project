@@ -13,15 +13,15 @@
 # HTML5 Geolocation
 
 class User:
-    def __init__(self, newID, newLat, newLong):
+    def __init__(self, newID, newLat, newLng):
         self.id = newID
         self.lat = newLat
-        self.long = newLong
+        self.lng = newLng
         self.building = None
 
-    def update(self, newLat, newLong):
+    def update(self, newLat, newLng):
         self.lat = newLat
-        self.long = newLong
+        self.lng = newLng
     
     def getID(self):
         return self.id
@@ -33,4 +33,4 @@ class User:
         self.building = newBuilding
 
     def getCoordinates(self):
-        return (self.lat, self.long)
+        return (self.lat, self.lng)

@@ -1,2 +1,6 @@
 
 \.vscode/
+
+server/__pycache__/
+
+server/dump_ist

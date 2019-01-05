@@ -67,8 +67,7 @@ class CommandUI:
                 else: 
                     print("Wrong building type!\n")
                 
-                
-                
+                        
             elif cmd == '2': 
                 print("") 
             elif cmd == '3': 
@@ -79,10 +78,3 @@ class CommandUI:
                 exited = True 
             else: 
                 print("Invalid command!\n")
-
-def askCampus():
-    print("Campus")
-
-def askBuildind():
-    print("Contained")
-

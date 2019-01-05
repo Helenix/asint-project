@@ -6,11 +6,8 @@ import fenixedu
 app = Flask(__name__)
 CORS(app)
 
-tecnico = TecnicoBuildings('ist')
-
-@app.route('/')
-def root():
-    return 'root'
+#Initialize db connection
+db_tecnico = TecnicoBuildings('asint')
 
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])
@@ -20,7 +17,7 @@ def admin_login():
         name = login_info['name']
         password = login_info['password']
 
-        if name == 'admin' and password == 'admin123':
+        if name == 'admin' and password == '123':
             # OK
             return jsonify({'token': 'admin'}), 200
         else:
@@ -36,11 +33,11 @@ def admin_add_building():
         return jsonify({'status': 'successfull'}), 200
     else:
         return jsonify({'error': 'No building information'}), 400
+
 #USER API
 @app.route('/api/user/login')
 def user_login():
-    code = request.args['code']
-    return jsonify({'code': code}), 200
+    return 'user'
 
 if __name__ == '__main__':
     app.run(debug = True)

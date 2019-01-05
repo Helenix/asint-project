@@ -1,33 +1,25 @@
 import requests
 import json
 import pickle
-from campus import Campus
-from building import Building
+import pymongo
 from buildings_info import BuildingsInfo
 
-'''import pymongo
-
-client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
-
-db = client["Test"]
-collections = db["Campus"]
-collections.insert_one({
-    "name": "alameda"
-})'''
-
-
-
 class TecnicoBuildings:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, db_name):
+        client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
+        self.db = client[db_name]
+        dbs = client.list_database_names()
 
-        try:
-            f = open('dump_' + name, 'rb')
-            self.tecnico  = pickle.load(f)
-            f.close()
+        
+        if db_name in dbs:
+            print("Database '%s' exists, loading it..." % (db_name))
+            
+            campus_collection = self.db['campus']
 
-        except IOError:
-            self.tecnico = {}
+        else:
+            print("There is no database named '%s', creating it... " % (db_name))
+
+            campus_collection = self.db['campus']
 
             url = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/spaces/"
             response = requests.get(url)
@@ -41,7 +33,12 @@ class TecnicoBuildings:
                     response = requests.get(newUrl)
                     campusInfo = response.json()
                                         
-                    campusObj = Campus(c['type'], int(c['id']), c['name'])
+                    campusDict = {
+                        'type': c['type'],
+                        'id': int(c['id']),
+                        'name': c['name'],
+                        'containedSpaces': []
+                    }
 
                     buildings = campusInfo['containedSpaces']
                     
@@ -49,16 +46,39 @@ class TecnicoBuildings:
                         b_info = info.getBuilding(b['id'])
 
                         if b_info:
-                            buildingObj = Building(b['type'], int(b['id']), b['name'], int(c['id']))
-                            buildingObj.setCoordinates(float(b_info['botLat']), float(b_info['leftLng']), float(b_info['topLat']), float(b_info['rightLng']))
-                            campusObj.addContainedSpace(buildingObj)
+                            buildingDict = {
+                                'type': b['type'],
+                                'id': int(b['id']),
+                                'name': b['name'],
+                                'topLevelSpaceId': int(c['id']),
+                                'botLat': float(b_info['botLat']),
+                                'leftLng': float(b_info['leftLng']),
+                                'topLat': float(b_info['topLat']),
+                                'rightLng': float(b_info['rightLng'])
+                            }
 
-                    self.tecnico[c['name']] = campusObj
+                            campusDict['containedSpaces'].append(buildingDict)
+            
+                    campus_collection.insert_one(campusDict)
 
-            f = open('dump_' + self.name, 'wb')
-            pickle.dump(self.tecnico, f)
-            f.close()
-           
+    def addCampus(self, newType, newID, newName):
+        campus_collection = self.db['campus']
+        campusDict = {
+            'type': c['type'],
+            'id': int(c['id']),
+            'name': c['name'],
+            'containedSpaces': []
+        }
+       
+        campus_collection.insert_one(campusDict)
+
+    def addBuilding(self, newType, newID, newName, newTopLevelSpaceID):
+        '''campus_collection = self.db['campus']
+        buildingObj = Building(newType, newID, newName, newTopLevelSpaceID)
+        buildingObj.setCoordinates(0,0,0,0)
+        
+        campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingObj.toDict()}})'''
+        pass
 
     def showBuildings(self):
         for campus_name, campus_obj in self.tecnico.items():

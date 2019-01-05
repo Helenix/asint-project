@@ -6,3 +6,5 @@ server/__pycache__/
 server/dump_ist
 
 admin/__pycache__/
+
+server/test\.py

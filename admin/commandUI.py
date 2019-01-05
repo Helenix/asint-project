@@ -1,5 +1,3 @@
-import requests 
-import json
 from inputs_validator import InputsValidator
  
 class CommandUI: 

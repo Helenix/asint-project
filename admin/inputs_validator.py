@@ -1,8 +1,14 @@
+import requests 
+import json
+
 class InputsValidator:
     def __init__(self):
         pass
     
-    def checkBuilding(self):  
+    def checkBuilding(self): 
+        print("->'1' to add a building")
+        print("->'2' to modify a building")
+        print("->'3' to delete a building")  
         input_holder = input("Type (campus, building): ")
 
         building_type = input_holder.upper()

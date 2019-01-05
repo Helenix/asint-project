@@ -77,7 +77,7 @@ class TecnicoBuildings:
         buildingDict = {
             'type': newType,
             'id': newID,
-            'name': newName
+            'name': newName,
             'topLevelSpaceId': newTopLevelSpaceID,
             'botLat': newBotLat,
             'leftLng': newLeftLng,

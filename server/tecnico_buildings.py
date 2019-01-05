@@ -64,22 +64,25 @@ class TecnicoBuildings:
     def addCampus(self, newType, newID, newName):
         campus_collection = self.db['campus']
         campusDict = {
-            'type': c['type'],
-            'id': int(c['id']),
-            'name': c['name'],
+            'type': newType,
+            'id': newID,
+            'name': newName,
             'containedSpaces': []
         }
        
         campus_collection.insert_one(campusDict)
 
-    def addBuilding(self, newType, newID, newName, newTopLevelSpaceID):
-        '''campus_collection = self.db['campus']
-        buildingObj = Building(newType, newID, newName, newTopLevelSpaceID)
-        buildingObj.setCoordinates(0,0,0,0)
+    def addBuilding(self, newType, newID, newName, newTopLevelSpaceID, newBotLat, newLeftLng, newTopLat, newRightLng):
+        campus_collection = self.db['campus']
+        buildingDict = {
+            'type': newType,
+            'id': newID,
+            'name': newName
+            'topLevelSpaceId': newTopLevelSpaceID,
+            'botLat': newBotLat,
+            'leftLng': newLeftLng,
+            'topLat': newTopLat,
+            'rightLng': newRightLng
+        }
         
-        campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingObj.toDict()}})'''
-        pass
-
-    def showBuildings(self):
-        for campus_name, campus_obj in self.tecnico.items():
-            campus_obj.__str__()
+        campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingDict}})

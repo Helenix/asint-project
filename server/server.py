@@ -8,6 +8,8 @@ CORS(app)
 
 #Initialize db connection
 db_tecnico = TecnicoBuildings('asint')
+#db_users
+#db_bots
 
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])

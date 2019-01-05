@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from tecnico_buildings import TecnicoBuildings
+from db_connector import DB_Conector
 import fenixedu
 
 app = Flask(__name__)
 CORS(app)
 
 #Initialize db connection
-db_tecnico = TecnicoBuildings('asint')
+db = DB_Conector('asint')
 #db_users
 #db_bots
 

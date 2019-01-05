@@ -1,25 +1,14 @@
 import requests
 import json
-import pickle
 import pymongo
 from buildings_info import BuildingsInfo
 
 class TecnicoBuildings:
-    def __init__(self, db_name):
-        client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
-        self.db = client[db_name]
-        dbs = client.list_database_names()
-
+    def __init__(self, collection, initialize):
+        self.campus_collection = collection
         
-        if db_name in dbs:
-            print("Database '%s' exists, loading it..." % (db_name))
-            
-            campus_collection = self.db['campus']
-
-        else:
-            print("There is no database named '%s', creating it... " % (db_name))
-
-            campus_collection = self.db['campus']
+        if initialize:
+            print("No collection named 'campus, creating it...")
 
             url = "https://fenix.tecnico.ulisboa.pt/api/fenix/v1/spaces/"
             response = requests.get(url)
@@ -59,10 +48,10 @@ class TecnicoBuildings:
 
                             campusDict['containedSpaces'].append(buildingDict)
             
-                    campus_collection.insert_one(campusDict)
+                    self.campus_collection.insert_one(campusDict)
 
     def addCampus(self, newType, newID, newName):
-        campus_collection = self.db['campus']
+        #campus_collection = self.db['campus']
         campusDict = {
             'type': newType,
             'id': newID,
@@ -70,10 +59,10 @@ class TecnicoBuildings:
             'containedSpaces': []
         }
        
-        campus_collection.insert_one(campusDict)
+        self.campus_collection.insert_one(campusDict)
 
     def addBuilding(self, newType, newID, newName, newTopLevelSpaceID, newBotLat, newLeftLng, newTopLat, newRightLng):
-        campus_collection = self.db['campus']
+        #campus_collection = self.db['campus']
         buildingDict = {
             'type': newType,
             'id': newID,
@@ -85,4 +74,4 @@ class TecnicoBuildings:
             'rightLng': newRightLng
         }
         
-        campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingDict}})
+        self.campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingDict}})

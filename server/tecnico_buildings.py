@@ -50,28 +50,10 @@ class TecnicoBuildings:
             
                     self.campus_collection.insert_one(campusDict)
 
-    def addCampus(self, newType, newID, newName):
-        #campus_collection = self.db['campus']
-        campusDict = {
-            'type': newType,
-            'id': newID,
-            'name': newName,
-            'containedSpaces': []
-        }
-       
+
+    def addCampus(self, campusDict):
+        
         self.campus_collection.insert_one(campusDict)
 
-    def addBuilding(self, newType, newID, newName, newTopLevelSpaceID, newBotLat, newLeftLng, newTopLat, newRightLng):
-        #campus_collection = self.db['campus']
-        buildingDict = {
-            'type': newType,
-            'id': newID,
-            'name': newName,
-            'topLevelSpaceId': newTopLevelSpaceID,
-            'botLat': newBotLat,
-            'leftLng': newLeftLng,
-            'topLat': newTopLat,
-            'rightLng': newRightLng
-        }
-        
-        self.campus_collection.update_one({'id': newTopLevelSpaceID},{'$push': {'containedSpaces': buildingDict}})
+    def addBuilding(self, buildingDict):
+        self.campus_collection.update_one({'id': buildingDict['topLevelSpaceId']},{'$push': {'containedSpaces': buildingDict}})

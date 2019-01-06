@@ -19,9 +19,10 @@ class DB_Conector:
         #self.user_db = TecnicoUsers()
         #self.logs_db = TecnicoLogs()
 
-    def addCampus(self, newType, newID, newName):
-        self.buildings_db.addCampus(newType, newID, newName)
+    def addCampus(self, campusDict):
+        self.buildings_db.addCampus(campusDict)
 
-    def addBuilding(self, newType, newID, newName, newTopLevelSpaceID, newBotLat, newLeftLng, newTopLat, newRightLng):
-        self.buildings_db.addBuilding(newType, newID, newName, newTopLevelSpaceID, newBotLat, newLeftLng, newTopLat, newRightLng)
+    def addBuilding(self, buildingDict):
+        self.buildings_db.addBuilding(buildingDict)
+  
     

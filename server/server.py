@@ -31,7 +31,16 @@ def admin_login():
 @app.route('/api/admin/building', methods = ['POST'])
 def admin_add_building():
     building_info = request.get_json()
+    print(building_info['type'])
     if building_info:
+        if building_info['type'] == 'CAMPUS':
+            
+            db.addCampus(building_info)
+
+        elif building_info['type'] == 'BUILDING':
+            
+            db.addBuilding(building_info)
+
         return jsonify({'status': 'successfull'}), 200
     else:
         return jsonify({'error': 'No building information'}), 400

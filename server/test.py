@@ -5,12 +5,12 @@ import pickle
 db = DB_Conector('asint')
 db.addBuilding({
     'type': 'CAMPUS', 
-    'id':5, 
+    'id':8, 
     'name': 'novoo',
-    'topLevelSpaceId': 1,
+    'topLevelSpaceId': 2,
     'botLat': 0,
     'leftLng': 1,
-    'topLat': 0,
+    'topLat': 2,
     'rightLng': 0
     })
 
@@ -21,7 +21,7 @@ db.addBuilding({
     'containedSpaces': []
     })'''
 
-db.deleteSpace(2)
+#db.deleteSpace(2)
 #tecnico.addCampus('CAMPUS', 1, 'Novo Campus')
 #tecnico.addBuilding('BUILDING', 2, 'Novo Building', 1, 0, 0, 0, 0)
 

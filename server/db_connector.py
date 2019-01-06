@@ -20,11 +20,11 @@ class DB_Conector:
         #self.logs_db = TecnicoLogs()
 
     def addCampus(self, campusDict):
-        self.buildings_db.addCampus(campusDict)
+        return self.buildings_db.addCampus(campusDict)
 
     def addBuilding(self, buildingDict):
-        self.buildings_db.addBuilding(buildingDict)
+        return self.buildings_db.addBuilding(buildingDict)
     
     def deleteSpace(self, spaceId):
-        self.buildings_db.deleteSpace(spaceId)
+        return self.buildings_db.deleteSpace(spaceId)
     

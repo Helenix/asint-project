@@ -8,8 +8,6 @@ CORS(app)
 
 #Initialize db connection
 db = DB_Conector('asint')
-#db_users
-#db_bots
 
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])
@@ -20,30 +18,42 @@ def admin_login():
         password = login_info['password']
 
         if name == 'admin' and password == '123':
-            # OK
             return jsonify({'token': 'admin'}), 200
         else:
-            # Bad request
-            return jsonify({'error': 'Wrong login information'}), 400
-    # No content
-    return jsonify({'error': 'No login information'}), 400
+            return jsonify({'error': 'Wrong login information!'}), 400
+
+    return jsonify({'error': 'No login information!'}), 400
 
 @app.route('/api/admin/building', methods = ['POST'])
 def admin_add_building():
     building_info = request.get_json()
-    print(building_info['type'])
+    
     if building_info:
-        if building_info['type'] == 'CAMPUS':
-            
-            db.addCampus(building_info)
+        if building_info['type'] == 'CAMPUS': 
+            result = db.addCampus(building_info)
 
         elif building_info['type'] == 'BUILDING':
-            
-            db.addBuilding(building_info)
+            result = db.addBuilding(building_info)
 
-        return jsonify({'status': 'successfull'}), 201
+        if result:
+            return jsonify({'status': 'Successfull'}), 200
+        else:
+            return jsonify({'status': 'Could not perform this action, some inputs are invalid!'})
     else:
-        return jsonify({'error': 'No building information'}), 400
+        return jsonify({'error': 'No building information!'}), 400
+
+@app.route('/api/admin/building', methods = ['DELETE'])
+def admin_delete_building():
+    building_info = request.get_json()
+    
+    if building_info:
+        result = db.deleteSpace(building_info['spaceId'])
+        if result:
+            return jsonify({'status': 'Successfull'}), 200
+        else:
+            return jsonify({'status': 'Could not perform this action, space ID does not exists!'})
+    else:
+        return jsonify({'error': 'No building information!'}), 400
 
 #USER API
 @app.route('/api/user/login')

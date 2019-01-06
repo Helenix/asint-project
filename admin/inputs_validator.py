@@ -7,8 +7,7 @@ class InputsValidator:
     
     def checkBuilding(self): 
         print("\n-'1' to add a building")
-        print("-'2' to modify a building")
-        print("-'3' to delete a building")
+        print("-'2' to delete a building")
         print("-'q' to abort\n")
         cmd = input("> ")
 
@@ -61,14 +60,33 @@ class InputsValidator:
 
 
                 url = "http://127.0.0.1:5000/api/admin"
-
                 response = requests.post(url + "/building", json = building_info)
                 print(response.json())
             
             else: 
-                print("Wrong building type!\n")
+                print('Wrong building type!\n')
+        
+        elif cmd == '2':
+            
+            try:
+                input_holder = input("SpaceID to be deleted: ")
+                space_id = int(input_holder)
+            except ValueError:
+                print("ID's must be integers!\n")
+                return
+
+            building_info = {
+                'spaceId': space_id
+            }
+            
+            url = "http://127.0.0.1:5000/api/admin"
+            response = requests.delete(url + "/building", json = building_info)
+            print(response.json())
 
         elif cmd == 'q':
             pass
+        
+        else:
+            print('Invalid command!')
 
         print('')

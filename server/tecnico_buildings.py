@@ -56,18 +56,16 @@ class TecnicoBuildings:
 
         if self.validator.checkCampus(campusDict, documents):
             self.campus_collection.insert_one(campusDict)
+            return True
+        return False
 
     def addBuilding(self, buildingDict):
         documents = self.campus_collection.find({})
 
         if self.validator.checkBuilding(buildingDict, documents):
             self.campus_collection.update_one({'id': buildingDict['topLevelSpaceId']},{'$push': {'containedSpaces': buildingDict}})
-
-    def editCampus(self, campusDict):
-        pass
-
-    def editBuilding(self, buildingDict):
-        pass
+            return True 
+        return False
 
     def deleteSpace(self, spaceId):
         documents = self.campus_collection.find({})
@@ -75,9 +73,10 @@ class TecnicoBuildings:
         for campus in documents:
             if spaceId == campus['id']:
                 self.campus_collection.delete_one({'id': spaceId})
+                return True
             else:
                 for containedSpace in campus['containedSpaces']:
                     if spaceId == containedSpace['id']:
                         self.campus_collection.update_one({'id': campus['id']},{'$pull': {'containedSpaces': {'id': spaceId}}})
-
-        print("ID does not exists!")
+                        return True
+        return False

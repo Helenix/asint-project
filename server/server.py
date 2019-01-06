@@ -41,7 +41,7 @@ def admin_add_building():
             
             db.addBuilding(building_info)
 
-        return jsonify({'status': 'successfull'}), 200
+        return jsonify({'status': 'successfull'}), 201
     else:
         return jsonify({'error': 'No building information'}), 400
 

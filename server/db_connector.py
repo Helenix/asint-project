@@ -24,5 +24,7 @@ class DB_Conector:
 
     def addBuilding(self, buildingDict):
         self.buildings_db.addBuilding(buildingDict)
-  
+    
+    def deleteSpace(self, spaceId):
+        self.buildings_db.deleteSpace(spaceId)
     

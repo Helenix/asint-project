@@ -1,11 +1,11 @@
-import requests
-import json
 import pymongo
 from buildings_info import BuildingsInfo
+from buildings_validator import BuildingsValidator
 
 class TecnicoBuildings:
     def __init__(self, collection, initialize):
         self.campus_collection = collection
+        self.validator = BuildingsValidator() 
         
         if initialize:
             print("No collection named 'campus, creating it...")
@@ -52,8 +52,32 @@ class TecnicoBuildings:
 
 
     def addCampus(self, campusDict):
-        
-        self.campus_collection.insert_one(campusDict)
+        documents = self.campus_collection.find({})
+
+        if self.validator.checkCampus(campusDict, documents):
+            self.campus_collection.insert_one(campusDict)
 
     def addBuilding(self, buildingDict):
-        self.campus_collection.update_one({'id': buildingDict['topLevelSpaceId']},{'$push': {'containedSpaces': buildingDict}})
+        documents = self.campus_collection.find({})
+
+        if self.validator.checkBuilding(buildingDict, documents):
+            self.campus_collection.update_one({'id': buildingDict['topLevelSpaceId']},{'$push': {'containedSpaces': buildingDict}})
+
+    def editCampus(self, campusDict):
+        pass
+
+    def editBuilding(self, buildingDict):
+        pass
+
+    def deleteSpace(self, spaceId):
+        documents = self.campus_collection.find({})
+
+        for campus in documents:
+            if spaceId == campus['id']:
+                self.campus_collection.delete_one({'id': spaceId})
+            else:
+                for containedSpace in campus['containedSpaces']:
+                    if spaceId == containedSpace['id']:
+                        self.campus_collection.update_one({'id': campus['id']},{'$pull': {'containedSpaces': {'id': spaceId}}})
+
+        print("ID does not exists!")

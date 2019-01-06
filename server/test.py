@@ -18,7 +18,7 @@ db.addCampus({
     'type': 'CAMPUS', 
     'id': 10, 
     'name': 'novo2',
-    'containedSpaces': ['lol']
+    'containedSpaces': []
     })
 
 #db.deleteSpace(2)

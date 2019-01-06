@@ -3,7 +3,8 @@ from tecnico_buildings import TecnicoBuildings
 
 class DB_Conector:
     def __init__(self, db_name):
-        client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
+        #client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
+        client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
         db = client[db_name]
         dbs = client.list_database_names()
       

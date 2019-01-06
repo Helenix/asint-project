@@ -2,6 +2,7 @@ from functools import wraps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_connector import DB_Conector
+#from flask_socketio import SocketIO
 import fenixedu
 
 app = Flask(__name__)
@@ -21,19 +22,15 @@ def login_required(route_to_wrap):
                 if info['token'] in list(token_dic.values()):
                     return route_to_wrap(*args, **kwargs)
                 else:
-                    return jsonify({'error': 'Wrong login information!'}), 403
+                    return jsonify({'error': 'Permission denied!'}), 403
 
             except KeyError:
-                return jsonify({'error': 'Validation Token not found!'}), 403
+                return jsonify({'error': 'Permission denied!'}), 403
         else:
-            return jsonify({'error': 'No JSON Object found!'}), 404
+            return jsonify({'error': 'Permission denied!'}), 403
 
     return wrap
 
-@app.route('/api', methods = ['POST'])
-@login_required
-def bla():
-    return jsonify({'olha': 'aqui'}), 200
 
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])
@@ -57,16 +54,19 @@ def admin_add_building():
     building_info = request.get_json()
     
     if building_info:
-        if building_info['type'] == 'CAMPUS': 
-            result = db.addCampus(building_info)
+        try:
+            if building_info['type'] == 'CAMPUS': 
+                result = db.addCampus(building_info)
 
-        elif building_info['type'] == 'BUILDING':
-            result = db.addBuilding(building_info)
+            elif building_info['type'] == 'BUILDING':
+                result = db.addBuilding(building_info)
 
-        if result:
-            return jsonify({'status': 'Successfull'}), 200
-        else:
-            return jsonify({'status': 'Could not perform this action, some inputs are invalid!'}), 400
+            if result:
+                return jsonify({'status': 'Successfull'}), 200
+            else:
+                return jsonify({'status': 'Could not perform this action, some inputs are invalid!'}), 400
+        except KeyError:
+            return jsonify({'status': 'Missing parameters!'}), 400
     else:
         return jsonify({'error': 'No building information!'}), 400
 
@@ -75,14 +75,17 @@ def admin_add_building():
 def admin_delete_building():
     building_info = request.get_json()
     
-    if building_info:
-        result = db.deleteSpace(building_info['spaceId'])
-        if result:
-            return jsonify({'status': 'Successfull'}), 200
+    try:
+        if building_info:
+            result = db.deleteSpace(building_info['spaceId'])
+            if result:
+                return jsonify({'status': 'Successfull'}), 200
+            else:
+                return jsonify({'status': 'Could not perform this action, space ID does not exists!'}), 400
         else:
-            return jsonify({'status': 'Could not perform this action, space ID does not exists!'}), 400
-    else:
-        return jsonify({'error': 'No building information!'}), 400
+            return jsonify({'error': 'No building information!'}), 400
+    except KeyError:
+        return jsonify({'status': 'Missing parameters!'}), 400
 
 #USER API
 @app.route('/api/user/login')

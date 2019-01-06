@@ -3,7 +3,7 @@ from db_connector import DB_Conector
 import pickle
 
 db = DB_Conector('asint')
-db.addBuilding({
+'''db.addBuilding({
     'type': 'CAMPUS', 
     'id':8, 
     'name': 'novoo',
@@ -12,14 +12,14 @@ db.addBuilding({
     'leftLng': 1,
     'topLat': 2,
     'rightLng': 0
-    })
-
-'''db.addCampus({
-    'type': 'CAMPUS', 
-    'id':10, 
-    'name': 'novo2',
-    'containedSpaces': []
     })'''
+
+db.addCampus({
+    'type': 'CAMPUS', 
+    'id': 10, 
+    'name': 'novo2',
+    'containedSpaces': ['lol']
+    })
 
 #db.deleteSpace(2)
 #tecnico.addCampus('CAMPUS', 1, 'Novo Campus')

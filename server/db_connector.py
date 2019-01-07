@@ -1,5 +1,8 @@
 import pymongo
 from tecnico_buildings import TecnicoBuildings
+from tecnico_bots import TecnicoBots
+from tecnico_users import TecnicoUsers
+from tecnico_logs import TecnicoLogs
 
 class DB_Conector:
     def __init__(self, db_name):
@@ -17,8 +20,10 @@ class DB_Conector:
             self.buildings_db = TecnicoBuildings(db['campus'], False)
         else:
             self.buildings_db = TecnicoBuildings(db['campus'], True)
-        #self.user_db = TecnicoUsers()
-        #self.logs_db = TecnicoLogs()
+        
+        self.bots_db = TecnicoBots(db['bots'])
+        self.user_db = TecnicoUsers(db['users'])
+        self.logs_db = TecnicoLogs(db['logs'])
 
     def addCampus(self, campusDict):
         return self.buildings_db.addCampus(campusDict)
@@ -29,3 +34,8 @@ class DB_Conector:
     def deleteSpace(self, spaceId):
         return self.buildings_db.deleteSpace(spaceId)
     
+    def addBot(self, botDict):
+        return self.bots_db.addBot(botDict)
+
+    def deleteBot(self, botID):
+        return self.bots_db.deleteBot(botID)

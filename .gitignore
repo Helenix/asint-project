@@ -8,3 +8,7 @@ server/dump_ist
 admin/__pycache__/
 
 server/test\.py
+
+server/test2\.py
+
+bots/__pycache__/

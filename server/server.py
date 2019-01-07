@@ -4,6 +4,7 @@ from flask_cors import CORS
 from db_connector import DB_Conector
 #from flask_socketio import SocketIO
 import fenixedu
+from random import randint
 
 app = Flask(__name__)
 CORS(app)
@@ -12,14 +13,15 @@ CORS(app)
 db = DB_Conector('asint')
 token_dic = {}
 
-def login_required(route_to_wrap):
+# IR BUSCAR AO HEADER AUTHORIZATION EM VEZ DE ENVIAR JSON
+def user_login_required(route_to_wrap):
     @wraps(route_to_wrap)
     def wrap(*args, **kwargs):
         info = request.get_json()
         
         if info:
             try:
-                if info['token'] in list(token_dic.values()):
+                if info['token'] in list(token_dic.values()) and info['token'] != token_dic['admin']:
                     return route_to_wrap(*args, **kwargs)
                 else:
                     return jsonify({'error': 'Permission denied!'}), 403
@@ -31,6 +33,34 @@ def login_required(route_to_wrap):
 
     return wrap
 
+def admin_login_required(route_to_wrap):
+    @wraps(route_to_wrap)
+    def wrap(*args, **kwargs):
+        info = request.get_json()
+        
+        if info:
+            try:
+                if info['token'] in list(token_dic.values()) and info['token'] == token_dic['admin']:
+                    return route_to_wrap(*args, **kwargs)
+                else:
+                    return jsonify({'error': 'Permission denied!'}), 403
+
+            except KeyError:
+                return jsonify({'error': 'Permission denied!'}), 403
+        else:
+            return jsonify({'error': 'Permission denied!'}), 403
+
+    return wrap
+
+@app.route('/api', methods = ['GET'])
+def test():
+    try:
+        authorization = request.headers['Authorization']
+        token = authorization[6:]
+    
+        return jsonify({'status':'successfull'})
+    except KeyError:
+        return jsonify({'error': 'No authorization token'})
 
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])
@@ -41,15 +71,19 @@ def admin_login():
         password = login_info['password']
 
         if name == 'admin' and password == '123':
-            token_dic[name] = 'token_admin'
-            return jsonify({'token': 'admin'}), 200
+            if 'admin' not in list(token_dic.keys()):
+                token_dic[name] = 'token_admin_' + str(randint(10000000,100000000))
+                print(token_dic[name])
+                return jsonify({'token': 'admin'}), 200
+            else:
+                return jsonify({'error': 'User already logged!'}), 400
         else:
             return jsonify({'error': 'Wrong login information!'}), 400
 
     return jsonify({'error': 'No login information!'}), 400
 
 @app.route('/api/admin/building', methods = ['POST'])
-@login_required
+@admin_login_required
 def admin_add_building():
     building_info = request.get_json()
     
@@ -71,7 +105,7 @@ def admin_add_building():
         return jsonify({'error': 'No building information!'}), 400
 
 @app.route('/api/admin/building', methods = ['DELETE'])
-@login_required
+@admin_login_required
 def admin_delete_building():
     building_info = request.get_json()
     
@@ -89,9 +123,21 @@ def admin_delete_building():
 
 #USER API
 @app.route('/api/user/login')
-@login_required
+@user_login_required
 def user_login():
     return 'user'
+
+#BOT API
+@app.route('/api/bot/account', methods = ['POST'])
+def bot_account_creation():
+    acc_info = request.get_json()
+
+    if acc_info:
+        result = db.addBot(acc_info)
+        return jsonify({'status': 'Bot created'})
+    else:
+        return jsonify({'error': 'No bot account information!'}), 400
+
 
 if __name__ == '__main__':
     app.run(debug = False)

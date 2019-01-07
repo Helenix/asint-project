@@ -53,8 +53,6 @@ class TecnicoBuildings:
 
     def addCampus(self, campusDict):
         documents = self.campus_collection.find({})
-        
-        #result = self.campus_collection.count_documents({'$or': [{'id': campusDict['id']},{'containedSpaces': {'id': campusDict['id']}}]})
 
         if self.validator.checkCampus(campusDict, documents):
             self.campus_collection.insert_one(campusDict)

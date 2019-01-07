@@ -1,5 +1,6 @@
 from inputs_validator import InputsValidator
 import requests
+from pprint import pprint
  
 class CommandUI: 
     def __init__(self, token):
@@ -17,16 +18,19 @@ class CommandUI:
             cmd = input("> ") 
  
             if cmd == '1':                 
-                validor.checkBuilding()
+                validor.checkBuilding(token)
             elif cmd == '2': 
                 print("") 
             elif cmd == '3': 
                 print("") 
-            elif cmd == '4': 
-                print("") 
+            elif cmd == '4':  
+
+                response = requests.get("http://127.0.0.1:5000/api/admin/logs", json = {'token': token})
+                pprint(response.json())
+                print("")
+                
             elif cmd.lower() == 'exit' or cmd.lower() == 'q': 
                 response = requests.get("http://127.0.0.1:5000/api/admin/logout", json = {'token': token})
-                print(response.json())
                 exited = True
 
             else: 

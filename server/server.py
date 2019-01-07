@@ -51,16 +51,6 @@ def admin_login_required(route_to_wrap):
 
     return wrap
 
-@app.route('/api', methods = ['GET'])
-def test():
-    try:
-        authorization = request.headers['Authorization']
-        token = authorization[6:]
-    
-        return jsonify({'status':'successfull'})
-    except KeyError:
-        return jsonify({'error': 'No authorization token'})
-
 # ADMIN API
 @app.route('/api/admin/login', methods = ['GET'])
 def admin_login(): 
@@ -101,6 +91,7 @@ def admin_logout():
 @admin_login_required
 def admin_add_building():
     building_info = request.get_json()
+    building_info.pop('token')
     
     if building_info:
         try:
@@ -123,6 +114,7 @@ def admin_add_building():
 @admin_login_required
 def admin_delete_building():
     building_info = request.get_json()
+    building_info.pop('token')
     
     try:
         if building_info:
@@ -136,6 +128,11 @@ def admin_delete_building():
     except KeyError:
         return jsonify({'status': 'Missing parameters!'}), 400
 
+@app.route('/api/admin/logs', methods = ['GET'])
+@admin_login_required
+def admin_get_logs():
+    result = db.getLogs()
+    return jsonify(result)
 #USER API
 @app.route('/api/user/login')
 @user_login_required
@@ -155,8 +152,6 @@ def bot_login():
             return jsonify({'error': 'Login failled!'}), 400
     else:
         return jsonify({'error': 'No bot account information!'}), 400
-
-
 
 @app.route('/api/bot/account', methods = ['POST'])
 def bot_account_creation():

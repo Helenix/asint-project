@@ -12,6 +12,15 @@ class TecnicoLogs():
             return True
         return False
 
-    def getLogs(self, user_id):
-        pass
-        
+    def getLogs(self):
+        logs = self.logs_collection.find({})
+    
+        logs_list = []
+        for log in logs:
+            logs_list.append({
+                'type': log['type'],
+                'content': log['content'],
+                'user_id': log['user_id'],
+            })
+            
+        return logs_list

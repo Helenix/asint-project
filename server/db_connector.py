@@ -6,8 +6,8 @@ from tecnico_logs import TecnicoLogs
 
 class DB_Conector:
     def __init__(self, db_name):
-        #client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
-        client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
+        client = pymongo.MongoClient("mongodb+srv://asint:asint@asint-3tsob.gcp.mongodb.net/test?retryWrites=true")
+        #client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
         db = client[db_name]
         dbs = client.list_database_names()
       
@@ -43,13 +43,5 @@ class DB_Conector:
     def addLog(self, logDict):
         return self.logs_db.addLog(logDict)
 
-    def find(self):
-        client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
-        db = client['asint']
-        collection = db['logs']
-        res = collection.find_one({'type': 'MOV'})
-        if res:
-            print(res)
-        else:
-            print(res)
-        return
+    def getLogs(self):
+       return self.logs_db.getLogs()

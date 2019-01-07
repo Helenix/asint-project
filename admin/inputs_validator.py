@@ -5,7 +5,7 @@ class InputsValidator:
     def __init__(self):
         pass
     
-    def checkBuilding(self): 
+    def checkBuilding(self, token): 
         print("\n-'1' to add a building")
         print("-'2' to delete a building")
         print("-'q' to abort\n")
@@ -57,6 +57,8 @@ class InputsValidator:
                     building_info['rightLng'] = building_rightLng
                 else:
                     building_info['containedSpaces'] = []
+
+                building_info['token'] = token
 
 
                 url = "http://127.0.0.1:5000/api/admin"

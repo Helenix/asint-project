@@ -39,3 +39,6 @@ class DB_Conector:
 
     def authenticateBot(self, botDict):
         return self.bots_db.authenticateBot(botDict)
+
+    def addLog(self, logDict):
+        return self.logs_db.addLog(logDict)

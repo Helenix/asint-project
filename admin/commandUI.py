@@ -9,7 +9,7 @@ class CommandUI:
             print("Valid commands:") 
             print("-'1' to define a build and their locations (latitude, longitude)") 
             print("-'2' to list all users that are logged-in into the system") 
-            print("-'3' to list all users that are inside a certaint building") 
+            print("-'3' to list all users that are inside a certain building") 
             print("-'4' to list the history of all the users movements and exchanged messages") 
             print("-'exit' or 'q' to exit\n") 
  

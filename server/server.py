@@ -131,7 +131,6 @@ def user_login():
 @app.route('/api/bot/login', methods = ['GET'])
 def bot_login():
     acc_info = request.get_json()
-
     
     if acc_info:
         result = db.authenticateBot(acc_info)

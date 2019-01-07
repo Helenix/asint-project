@@ -1,6 +1,5 @@
 import getpass
 import requests
-from passlib.hash import pbkdf2_sha256
 
 class BotUI:
     def __init__(self):

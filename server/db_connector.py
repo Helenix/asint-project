@@ -37,5 +37,5 @@ class DB_Conector:
     def addBot(self, botDict):
         return self.bots_db.addBot(botDict)
 
-    def deleteBot(self, botID):
-        return self.bots_db.deleteBot(botID)
+    def authenticateBot(self, botDict):
+        return self.bots_db.authenticateBot(botDict)

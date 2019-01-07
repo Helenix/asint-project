@@ -18,6 +18,15 @@ class BotUI:
             if cmd == '1':                 
                 acc_name = input("Bot login name: ")
                 acc_pass = getpass.getpass('Bot password: ')
+
+                acc_info = {
+                    'acc_name': acc_name,
+                    'acc_pass':  acc_pass
+                }
+
+                response = requests.get(url + '/login' , json = acc_info)
+                response_json = response.json()
+                print(response_json)
             
             elif cmd == '2': 
                 acc_name = input("Bot login name: ")
@@ -31,14 +40,12 @@ class BotUI:
                 
                 acc_info = {
                     'acc_name': acc_name,
-                    'acc_pass':  pbkdf2_sha256.hash(acc_pass),
+                    'acc_pass':  acc_pass,
                     'acc_building_id': acc_building_id
                 }
 
                 response = requests.post(url + '/account' , json = acc_info)
-
                 response_json = response.json()
-
                 print(response_json)
           
             elif cmd.lower() == 'exit' or cmd.lower() == 'q': 

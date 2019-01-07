@@ -128,13 +128,32 @@ def user_login():
     return 'user'
 
 #BOT API
+@app.route('/api/bot/login', methods = ['GET'])
+def bot_login():
+    acc_info = request.get_json()
+
+    
+    if acc_info:
+        result = db.authenticateBot(acc_info)
+        if result:
+            return jsonify({'token': 'bot_token'}), 400
+        else:
+            return jsonify({'error': 'Login failled!'}), 400
+    else:
+        return jsonify({'error': 'No bot account information!'}), 400
+
+
+
 @app.route('/api/bot/account', methods = ['POST'])
 def bot_account_creation():
     acc_info = request.get_json()
 
     if acc_info:
         result = db.addBot(acc_info)
-        return jsonify({'status': 'Bot created'})
+        if result:
+            return jsonify({'status': 'Bot created'}),200
+        else:
+            return jsonify({'status': 'Something already in use'}),400
     else:
         return jsonify({'error': 'No bot account information!'}), 400
 

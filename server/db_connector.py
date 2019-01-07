@@ -42,3 +42,14 @@ class DB_Conector:
 
     def addLog(self, logDict):
         return self.logs_db.addLog(logDict)
+
+    def find(self):
+        client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
+        db = client['asint']
+        collection = db['logs']
+        res = collection.find_one({'type': 'MOV'})
+        if res:
+            print(res)
+        else:
+            print(res)
+        return

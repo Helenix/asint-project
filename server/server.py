@@ -2,7 +2,6 @@ from functools import wraps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db_connector import DB_Conector
-#from flask_socketio import SocketIO
 import fenixedu
 from random import randint
 
@@ -67,20 +66,36 @@ def test():
 def admin_login(): 
     login_info = request.get_json()
     if login_info:
-        name = login_info['name']
-        password = login_info['password']
+        try:
+            name = login_info['name']
+            password = login_info['password']
 
-        if name == 'admin' and password == '123':
-            if 'admin' not in list(token_dic.keys()):
-                token_dic[name] = 'token_admin_' + str(randint(10000000,100000000))
-                print(token_dic[name])
-                return jsonify({'token': 'admin'}), 200
+            if name == 'admin' and password == '123':
+                if 'admin' not in list(token_dic.keys()):
+                    token_dic[name] = 'token_admin_' + str(randint(10000000,100000000))
+                    return jsonify({'token': token_dic[name]}), 200
+                else:
+                    return jsonify({'error': 'User already logged!'}), 400
             else:
-                return jsonify({'error': 'User already logged!'}), 400
-        else:
-            return jsonify({'error': 'Wrong login information!'}), 400
-
+                return jsonify({'error': 'Wrong login information!'}), 400
+        except KeyError:
+             return jsonify({'error': 'Wrong format!'}), 400
     return jsonify({'error': 'No login information!'}), 400
+
+@app.route('/api/admin/logout', methods = ['GET'])
+@admin_login_required
+def admin_logout():
+    logout_info = request.get_json()
+
+    if logout_info:
+        try:
+            token = logout_info['token']
+            if token in list(token_dic.values()):
+                token_dic.pop('admin')
+                return jsonify({'status': 'Successfull logout!'}), 200
+        except KeyError:
+             return jsonify({'error': 'Wrong format!'}), 400
+    return jsonify({'error': 'No parameters!'}), 400
 
 @app.route('/api/admin/building', methods = ['POST'])
 @admin_login_required

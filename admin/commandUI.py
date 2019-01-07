@@ -1,7 +1,8 @@
 from inputs_validator import InputsValidator
+import requests
  
 class CommandUI: 
-    def __init__(self):
+    def __init__(self, token):
         validor = InputsValidator()
 
         exited = False 
@@ -24,6 +25,9 @@ class CommandUI:
             elif cmd == '4': 
                 print("") 
             elif cmd.lower() == 'exit' or cmd.lower() == 'q': 
-                exited = True 
+                response = requests.get("http://127.0.0.1:5000/api/admin/logout", json = {'token': token})
+                print(response.json())
+                exited = True
+
             else: 
                 print("Invalid command!\n")

@@ -4,6 +4,9 @@ import json
 
 class LoginUI:
     def __init__(self):
+        pass
+    
+    def loop(self):
         logged = False
         while not logged:
             name = input('Login name: ')
@@ -27,3 +30,6 @@ class LoginUI:
 
             except:
                 print('Error in login!\n')
+
+        return token
+        

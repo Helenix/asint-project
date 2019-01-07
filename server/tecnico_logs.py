@@ -10,6 +10,8 @@ class TecnicoLogs():
         if self.validator.checkLog(logDict):
             self.logs_collection.insert_one(logDict)
             return True
-
         return False
+
+    def getLogs(self, user_id):
+        pass
         
